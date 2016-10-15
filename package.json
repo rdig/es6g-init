@@ -9,7 +9,7 @@
     "terminal": "gulp --gulpfile gulpfile.js --terminal --silent",
     "http": "npm run browser",
     "browser": "gulp --gulpfile gulpfile.js --browser",
-	"example": ""
+    "example": ""
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,10 @@
   },
   "homepage": "https://github.com/rdig/es6g-init",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "babel-core": "^6.17.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
   }
 }
