@@ -1,0 +1,39 @@
+{
+  "private": false,
+  "name": "es6g-init",
+  "version": "0.0.1",
+  "description": "An init package to get you up and running **fast** with a clean environment to prototype with javascript",
+  "scripts": {
+    "start": "npm run terminal",
+    "term": "npm run terminal",
+    "terminal": "gulp --gulpfile gulpfile.js --terminal --silent",
+    "http": "npm run browser",
+    "browser": "gulp --gulpfile gulpfile.js --browser",
+	"example": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdig/es6g-init.git"
+  },
+  "author": {
+    "name": "Raul Glogovetan",
+    "email": "raul@glogovetan.com",
+    "url": "https://glogovetan.com/"
+  },
+  "license": "MIT",
+  "keywords": [
+    "prototyping",
+    "javscript",
+    "es6",
+    "gulp",
+    "init",
+    "boilerplate"
+  ],
+  "bugs": {
+    "url": "https://github.com/rdig/es6g-init/issues"
+  },
+  "homepage": "https://github.com/rdig/es6g-init",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
