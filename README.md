@@ -14,6 +14,12 @@ Task runner and orchestrator (well, there's npm...) of various services (transpi
 
 More info: [gulpjs.com](http://gulpjs.com/)
 
+### Del
+
+Clean the environment before transpiling / re-transpiling files.
+
+More info: [github.com/sindresorhus/del](https://github.com/sindresorhus/del)
+
 ## Requirements
 
 - **Node.js** - Either node version works [`4.x`](https://nodejs.org/en/download/) or [`6.x`](https://nodejs.org/en/download/current/), but the `4.x` version will spit out an excessive amount of warnings (some packages are only maintained for node `6.x`+).

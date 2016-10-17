@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const path = require('path');
 const exec = require('child_process').exec;
+const del = require('del');
 
 const runType = process.argv[process.argv.length-1].slice(2);
 
@@ -16,17 +17,15 @@ const configObject = {
 	settings: {}
 };
 
-gulp.task('clean', [], () => {});
+gulp.task('clean', [], () => del(configObject.paths.build + '/*'));
 
-gulp.task('move', ['clean'], () => {});
+gulp.task('transpile', [], () => {});
 
-gulp.task('transpile', ['move'], () => {});
+gulp.task('server', ['clean'], () => {});
 
-gulp.task('server', ['transpile'], () => {});
-
-gulp.task('watch', ['transpile'], () => {});
+gulp.task('watch', ['clean'], () => {});
 
 gulp.task(
 	'default',
-	runType === 'browser' ? ['server', 'watch'] : ['transpile', 'watch']
+	(runType === 'browser') ? ['server', 'watch'] : ['watch']
 );
