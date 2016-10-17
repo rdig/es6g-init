@@ -6,6 +6,9 @@ It's meant to build simple code / figuring out how things work as opposed to bui
 
 ## Tell
 
+Features:
+- ES6 Syntax transpiling w/ [stage-0](https://babeljs.io/docs/plugins/preset-stage-0/)
+
 ## Tech stack
 
 ### Gulp
@@ -19,6 +22,12 @@ More info: [gulpjs.com](http://gulpjs.com/)
 Clean the environment before transpiling / re-transpiling files.
 
 More info: [github.com/sindresorhus/del](https://github.com/sindresorhus/del)
+
+### Babel
+
+Used to tranpile javascript files. It contains the following presets:
+- es2015 - [https://babeljs.io/docs/plugins/preset-es2015/](https://babeljs.io/docs/plugins/preset-es2015/)
+- stage-0 - [https://babeljs.io/docs/plugins/preset-stage-0/](https://babeljs.io/docs/plugins/preset-stage-0/)
 
 ## Requirements
 
