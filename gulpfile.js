@@ -23,9 +23,18 @@ const configObject = {
 	}
 };
 
-gulp.task('clean', [], () => del(configObject.paths.build + '/*'));
+del.sync(configObject.paths.build + '/*');
 
-gulp.task('transpile', [], () => {
+gulp.task('move', [], () => {
+
+	gulp.src(configObject.paths.source + '/**/' + configObject.extensions.jsMin)
+		.pipe(
+			gulp.dest(configObject.paths.build)
+		);
+
+})
+
+gulp.task('transpile/browser', ['move'], () => {
 
 	const fileGlobs = [
 		configObject.paths.source + '/**/' + configObject.extensions.js,
@@ -43,13 +52,16 @@ gulp.task('transpile', [], () => {
 		.pipe(
 			gulp.dest(configObject.paths.build)
 		);
+
 });
 
-gulp.task('server', ['clean'], () => {});
+gulp.task('transpile/terminal', [], () => {});
 
-gulp.task('watch', ['clean', 'transpile'], () => {});
+gulp.task('server', ['transpile/browser'], () => {});
+
+gulp.task('watch', [], () => {});
 
 gulp.task(
 	'default',
-	(runType === 'browser') ? ['server', 'watch'] : ['watch']
+	(runType === 'browser') ? ['server', 'watch'] : ['watch', 'transpile/terminal']
 );
