@@ -8,6 +8,8 @@ It's meant to build simple code / figuring out how things work as opposed to bui
 
 Features:
 - ES6 Syntax transpiling w/ [stage-0](https://babeljs.io/docs/plugins/preset-stage-0/)
+- Automatic .js file injection into .html (when run in browser mode)
+- Permissive of minified .js files (eg: external libraries brought in)
 
 ## Tech stack
 
@@ -16,6 +18,10 @@ Features:
 Task runner and orchestrator (well, there's npm...) of various services (transpiling, http server, file watcher, ...).
 
 More info: [gulpjs.com](http://gulpjs.com/)
+
+There are also a number of other packages (gulp plugins) used for various task:
+- **gulp-babel** - a Gulp plugin for Babel. More info [github.com/babel/gulp-babel](https://github.com/babel/gulp-babel)
+- **gulp-inject** - Inject .js files into .html. More info: [github.com/klei/gulp-inject](https://github.com/klei/gulp-inject)
 
 ### Del
 
@@ -26,8 +32,8 @@ More info: [github.com/sindresorhus/del](https://github.com/sindresorhus/del)
 ### Babel
 
 Used to tranpile javascript files. It contains the following presets:
-- es2015 - [https://babeljs.io/docs/plugins/preset-es2015/](https://babeljs.io/docs/plugins/preset-es2015/)
-- stage-0 - [https://babeljs.io/docs/plugins/preset-stage-0/](https://babeljs.io/docs/plugins/preset-stage-0/)
+- es2015 - [babeljs.io/docs/plugins/preset-es2015/](https://babeljs.io/docs/plugins/preset-es2015/)
+- stage-0 - [babeljs.io/docs/plugins/preset-stage-0/](https://babeljs.io/docs/plugins/preset-stage-0/)
 
 ## Requirements
 

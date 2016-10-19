@@ -29,3 +29,6 @@ build/*
 
 # Tern Js project file
 .tern-project
+
+# Temporary
+source/*

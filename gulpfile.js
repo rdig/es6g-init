@@ -3,6 +3,7 @@ const path = require('path');
 const exec = require('child_process').exec;
 const del = require('del');
 const babel = require('gulp-babel');
+const inject = require('gulp-inject');
 
 const runType = process.argv[process.argv.length-1].slice(2);
 
@@ -12,18 +13,27 @@ const configObject = {
 		source: path.resolve('source')
 	},
 	extensions: {
+		html: 'index.html',
 		js: '*.js',
 		jsMin: '*.min.js'
 	},
-	settings: {
+	options: {
 		babel: {
 			presets: ['es2015', 'stage-0'],
 			comments: false
+		},
+		gulp: {
+			src: {
+				read: false
+			}
+		},
+		inject: {
+			relative: true
 		}
 	}
 };
 
-del.sync(configObject.paths.build + '/*');
+del.sync(configObject.paths.build + '/*')
 
 gulp.task('move', [], () => {
 
@@ -32,7 +42,7 @@ gulp.task('move', [], () => {
 			gulp.dest(configObject.paths.build)
 		);
 
-})
+});
 
 gulp.task('transpile/browser', ['move'], () => {
 
@@ -43,7 +53,7 @@ gulp.task('transpile/browser', ['move'], () => {
 
 	gulp.src(fileGlobs)
 		.pipe(
-			babel(configObject.settings.babel)
+			babel(configObject.options.babel)
 		)
 		.on(
 			'error',
@@ -57,7 +67,25 @@ gulp.task('transpile/browser', ['move'], () => {
 
 gulp.task('transpile/terminal', [], () => {});
 
-gulp.task('server', ['transpile/browser'], () => {});
+gulp.task('source', ['transpile/browser'], () => {
+
+	gulp.src(configObject.paths.source + '/' + configObject.extensions.html)
+		.pipe(
+			inject(
+				gulp.src(
+					configObject.paths.source + '/**/' + configObject.extensions.js,
+					configObject.options.gulp.src
+				),
+				configObject.options.inject
+			)
+		)
+		.pipe(
+			gulp.dest(configObject.paths.build)
+		);
+
+});
+
+gulp.task('server', ['source'], () => {});
 
 gulp.task('watch', [], () => {});
 
