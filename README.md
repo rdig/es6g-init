@@ -10,6 +10,7 @@ Features:
 - ES6 Syntax transpiling w/ [stage-0](https://babeljs.io/docs/plugins/preset-stage-0/)
 - Automatic .js file injection into .html (when run in browser mode)
 - Permissive of minified .js files (eg: external libraries brought in)
+- Local web server w/ auto-reloading
 
 ## Tech stack
 
@@ -22,6 +23,7 @@ More info: [gulpjs.com](http://gulpjs.com/)
 There are also a number of other packages (gulp plugins) used for various task:
 - **gulp-babel** - a Gulp plugin for Babel. More info [github.com/babel/gulp-babel](https://github.com/babel/gulp-babel)
 - **gulp-inject** - Inject .js files into .html. More info: [github.com/klei/gulp-inject](https://github.com/klei/gulp-inject)
+- **gulp-connect** - Run a local webserver w/ livereload. More info: [github.com/avevlad/gulp-connect](https://github.com/avevlad/gulp-connect)
 
 ### Del
 

@@ -4,6 +4,7 @@ const exec = require('child_process').exec;
 const del = require('del');
 const babel = require('gulp-babel');
 const inject = require('gulp-inject');
+const connect = require('gulp-connect');
 
 const runType = process.argv[process.argv.length-1].slice(2);
 
@@ -31,6 +32,11 @@ const configObject = {
 			relative: true
 		}
 	}
+};
+configObject.options.connect = {
+	root: configObject.paths.build,
+	port: 8080,
+	livereload: true
 };
 
 del.sync(configObject.paths.build + '/*')
@@ -81,11 +87,14 @@ gulp.task('source', ['transpile/browser'], () => {
 		)
 		.pipe(
 			gulp.dest(configObject.paths.build)
+		)
+		.pipe(
+			connect.reload()
 		);
 
 });
 
-gulp.task('server', ['source'], () => {});
+gulp.task('server', ['source'], () => connect.server(configObject.options.connect));
 
 gulp.task('watch', [], () => {});
 
