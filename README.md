@@ -12,6 +12,7 @@ Features:
 - Permissive of minified .js files (eg: external libraries brought in)
 - Local web server w/ auto-reloading
 - File bundling (terminal mode)
+- Watching files for changes
 
 ## Tech stack
 

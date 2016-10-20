@@ -7,7 +7,7 @@ const inject = require('gulp-inject');
 const connect = require('gulp-connect');
 const concat = require('gulp-concat');
 
-const runType = process.argv[process.argv.length-1].slice(2);
+const mode = process.argv[process.argv.length-1].slice(2);
 
 const configObject = {
 	paths: {
@@ -95,13 +95,15 @@ gulp.task('transpile/terminal', [], () => {
 
 gulp.task('source', ['transpile/browser'], () => {
 
+	const filesGlob = [
+		configObject.paths.source + '/**/' + configObject.extensions.minJs,
+		configObject.paths.source + '/**/' + configObject.extensions.js
+	];
+
 	gulp.src(configObject.paths.source + '/' + configObject.extensions.html)
 		.pipe(
 			inject(
-				gulp.src(
-					configObject.paths.source + '/**/' + configObject.extensions.js,
-					configObject.options.gulp.src
-				),
+				gulp.src(filesGlob, configObject.options.gulp.src),
 				configObject.options.inject
 			)
 		)
@@ -116,9 +118,36 @@ gulp.task('source', ['transpile/browser'], () => {
 
 gulp.task('server', ['source'], () => connect.server(configObject.options.connect));
 
-gulp.task('watch', [], () => {});
+/*
+ * Gulp task: File watcher for browser / terminal mode
+ *
+ * Based on the mode we are in (browser/terminal) we start different watchers for file / files
+ * types.
+ *
+ */
+gulp.task('watch', [], () => {
+
+if (mode === 'browser') {
+
+	gulp.watch(
+		[
+			configObject.paths.source + '/**/' + configObject.extensions.js,
+			configObject.paths.source + '/**/' + configObject.extensions.html
+		],
+		['source']
+	);
+
+} else {
+
+	/*
+	 * @TODO add watcher for terminal mode
+	 */
+
+}
+
+});
 
 gulp.task(
 	'default',
-	(runType === 'browser') ? ['server', 'watch'] : ['watch', 'transpile/terminal']
+	(mode === 'browser') ? ['server', 'watch'] : ['transpile/terminal', 'watch']
 );
