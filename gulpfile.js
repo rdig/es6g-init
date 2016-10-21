@@ -8,6 +8,12 @@ const connect = require('gulp-connect');
 const concat = require('gulp-concat');
 const wait = require('wait-on');
 
+/*
+ * Get the current mode in which we are running. This is done by parsing the last argument that
+ * gets passed to the Gulp CLI invocation (eg: "--browser").
+ * We don't need to set a default value (in case an argument is not provided) since we only check
+ * for mode === "brower", anything else and the config will run in terminal mode.
+ */
 const mode = process.argv[process.argv.length-1].slice(2);
 
 /*
