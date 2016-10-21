@@ -120,6 +120,14 @@ const terminalExec = (file) => {
 
 del.sync(configObject.paths.build + '/*');
 
+/*
+ * Gulp task: Transpile files using babel w/ presets for browser mode
+ *
+ * Even if we didn't explicitly stated, we are ignoring minified javascript files from transpiling
+ * (see configObject.options.babel.ignore), but that doesn't mean we don't stream them to the
+ * destination. This is because we assume that any minified file is an external library ans should
+ * be left alone.
+ */
 gulp.task('transpile/browser', [], () => {
 
 	gulp.src(configObject.paths.source + '/**/' + configObject.extensions.js)
@@ -137,7 +145,7 @@ gulp.task('transpile/browser', [], () => {
 });
 
 /*
- * Gulp task: Transpile files using babel w/ presets
+ * Gulp task: Transpile files using babel w/ presets for terminal mode
  *
  * Notice that we are using an array of file globs, where the minfied files go first. This is
  * because we assume that any minified file is an external library and should be before our
