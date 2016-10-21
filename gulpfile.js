@@ -10,19 +10,36 @@ const wait = require('wait-on');
 
 const mode = process.argv[process.argv.length-1].slice(2);
 
+/*
+ * Configurations used in the gulpfile.
+ */
 const configObject = {
+	/*
+	 * Generated paths to the source and build folder.
+	 * If you need to change them, do it here.
+	 */
 	paths: {
 		build: path.resolve('build'),
 		source: path.resolve('source')
 	},
+	/*
+	 * The name of the bundle file that gets created when running in terminal mode.
+	 * If you need to change it, do it here.
+	 */
 	files: {
 		bundle: 'bundle.js'
 	},
+	/*
+	 * Standardised file extensions. There isn't any good reason to change these.
+	 */
 	extensions: {
 		html: 'index.html',
 		js: '*.js',
 		minJs: '*.min.js'
 	},
+	/*
+	 * Options for the various Gulp plugins used through the file.
+	 */
 	options: {
 		babel: {
 			presets: ['es2015', 'stage-0'],
@@ -45,6 +62,10 @@ const configObject = {
 		}
 	}
 };
+/*
+ * We have to call it after since we don't have access to the configObject.paths.build value while
+ * initally declaring it
+ */
 configObject.options.connect = {
 	root: configObject.paths.build,
 	port: 8080,
