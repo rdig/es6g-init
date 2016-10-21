@@ -193,6 +193,11 @@ gulp.task('source', ['transpile/browser'], () => {
 
 });
 
+/*
+ * Gulp task: Local web server
+ *
+ * This task gets called only if we are running in browser mode
+ */
 gulp.task('server', ['source'], () => connect.server(configObject.options.connect));
 
 /*
