@@ -205,35 +205,41 @@ gulp.task('server', ['source'], () => connect.server(configObject.options.connec
  */
 gulp.task('watch', [], () => {
 
-if (mode === 'browser') {
+	if (mode === 'browser') {
 
-	gulp.watch(
-		[
+		gulp.watch(
+			[
+				configObject.paths.source + '/**/' + configObject.extensions.js,
+				configObject.paths.source + '/**/' + configObject.extensions.html
+			],
+			['source']
+		);
+
+	} else {
+
+		const watcher = gulp.watch(
 			configObject.paths.source + '/**/' + configObject.extensions.js,
-			configObject.paths.source + '/**/' + configObject.extensions.html
-		],
-		['source']
-	);
+			['transpile/terminal']
+		);
+		const file = configObject.paths.build + '/' + configObject.files.bundle;
 
-} else {
+		/*
+		 * Execute it initially, then the onChange event will call it for us
+		 */
+		terminalExec(file);
 
-	const watcher = gulp.watch(
-		configObject.paths.source + '/**/' + configObject.extensions.js,
-		['transpile/terminal']
-	);
-	const file = configObject.paths.build + '/' + configObject.files.bundle;
+		watcher.on('change', () => terminalExec(file));
 
-	/*
-	 * Execute it initially, then the onChange event will call it for us
-	 */
-	terminalExec(file);
-
-	watcher.on('change', () => terminalExec(file));
-
-}
+	}
 
 });
 
+/*
+ * Gulp task: Default Gulp task
+ *
+ * Based of the mode that we run in, constructs two different arrays of dependency tasks to
+ * call upon
+ */
 gulp.task(
 	'default',
 	(mode === 'browser') ? ['server', 'watch'] : ['transpile/terminal', 'watch']
