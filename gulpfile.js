@@ -140,7 +140,7 @@ gulp.task('transpile/browser', [], () => {
  * Gulp task: Transpile files using babel w/ presets
  *
  * Notice that we are using an array of file globs, where the minfied files go first. This is
- * because we assume that any minified file is an external library and should be run before our
+ * because we assume that any minified file is an external library and should be before our
  * files (non-minified). Also, the minified files will not be transpiled.
  *
  * Since we are running this in a terminal using node, this limits us at running only one file at
@@ -170,6 +170,18 @@ gulp.task('transpile/terminal', [], () => {
 
 });
 
+/*
+ * Gulp task: Inject javscript files into index.html
+ *
+ * This task gets called only if we are running in browser mode and injects all our .js files into
+ * the comment blocks that are declared inside our index.html
+ * For more info on how these comment blocks are declared please have a look at:
+ * https://github.com/klei/gulp-inject#optionsstarttag
+ *
+ * Notice that we are using an array of file globs, where the minfied files go first. This is
+ * because we assume that any minified file is an external library and should run before our
+ * files (non-minified).
+ */
 gulp.task('source', ['transpile/browser'], () => {
 
 	const filesGlob = [
