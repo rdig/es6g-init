@@ -6,6 +6,7 @@ const babel = require('gulp-babel');
 const inject = require('gulp-inject');
 const connect = require('gulp-connect');
 const concat = require('gulp-concat');
+const wait = require('wait-on');
 
 const mode = process.argv[process.argv.length-1].slice(2);
 
@@ -13,6 +14,9 @@ const configObject = {
 	paths: {
 		build: path.resolve('build'),
 		source: path.resolve('source')
+	},
+	files: {
+		bundle: 'bundle.js'
 	},
 	extensions: {
 		html: 'index.html',
@@ -32,6 +36,12 @@ const configObject = {
 		},
 		inject: {
 			relative: true
+		},
+		wait: {
+			delay: 0,
+			interval: 0,
+			timeout: 30000,
+			window: 0
 		}
 	}
 };
@@ -39,6 +49,73 @@ configObject.options.connect = {
 	root: configObject.paths.build,
 	port: 8080,
 	livereload: true
+};
+
+/**
+ * Helper function to execute our bundle file via nodejs. It clears the console window, calculates
+ * the script's execution time, and logs the output to screen.
+ * Notice the wait() function which will wait for our file to become available an only then try to
+ * execute it.
+ *
+ * @method terminalExec
+ *
+ * @param {string} file String containing file name including path
+ *
+ * @return {bool} Function returns false, since it's used only for display
+ */
+const terminalExec = (file) => {
+
+	/*
+	 * Clear the terminal / console
+	 */
+	process.stdout.write("\u001b[2J\u001b[0;0H");
+
+	const options = Object.assign(
+		{},
+		configObject.options.wait,
+		{ resources: [file] }
+	);
+	const startExecution = Date.now();
+
+	/*
+	 * Wait for our file to become available else, we get an error
+	 */
+	wait(options, function (err) {
+
+		if (err) {
+			return handleError(err);
+		}
+
+		exec('nodejs ' + file, (err, stdout, stderr) => {
+
+			const executionTime = (Date.now() - startExecution);
+
+			const displayTime = 'Execution time: ' + executionTime  + 'ms ';
+
+			/*
+			 * Display execution time / delimiter
+			 */
+			console.log(
+				displayTime,
+				Array
+					.from({ length: process.stdout.columns - displayTime.length - 1})
+					.map((column) => column = '-')
+					.join(''),
+				''
+			);
+
+			console.log(stdout);
+
+			if (stderr) {
+				console.log(stderr);
+			}
+
+		});
+
+		return false;
+
+	});
+
 };
 
 del.sync(configObject.paths.build + '/*');
@@ -85,7 +162,7 @@ gulp.task('transpile/terminal', [], () => {
 			console.error.bind(console)
 		)
 		.pipe(
-			concat('bundle.js')
+			concat(configObject.files.bundle)
 		)
 		.pipe(
 			gulp.dest(configObject.paths.build)
@@ -123,7 +200,8 @@ gulp.task('server', ['source'], () => connect.server(configObject.options.connec
  *
  * Based on the mode we are in (browser/terminal) we start different watchers for file / files
  * types.
- *
+ * For the terminal mode, besides the task, after the file change is detected, the watcher will also
+ * call a function (helper function to display our bundle in the terminal)
  */
 gulp.task('watch', [], () => {
 
@@ -139,9 +217,18 @@ if (mode === 'browser') {
 
 } else {
 
+	const watcher = gulp.watch(
+		configObject.paths.source + '/**/' + configObject.extensions.js,
+		['transpile/terminal']
+	);
+	const file = configObject.paths.build + '/' + configObject.files.bundle;
+
 	/*
-	 * @TODO add watcher for terminal mode
+	 * Execute it initially, then the onChange event will call it for us
 	 */
+	terminalExec(file);
+
+	watcher.on('change', () => terminalExec(file));
 
 }
 

@@ -41,6 +41,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^5.0.0",
-    "gulp-inject": "^4.1.0"
+    "gulp-inject": "^4.1.0",
+    "wait-on": "^1.5.3"
   }
 }
