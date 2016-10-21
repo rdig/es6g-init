@@ -145,6 +145,10 @@ const terminalExec = (file) => {
 
 };
 
+/*
+ * Clean the build folder. This is invoked here manually (and syncronous) and not in it's own task
+ * since we only want to run it once.
+ */
 del.sync(configObject.paths.build + '/*');
 
 /*
