@@ -44,7 +44,7 @@ Minified files always are included first since we assume they are external libra
 
 In [terminal mode](#run-modes) our `.js` files are traspiled (except the minified ones), all of them bundled into a single one, moved into the `build` folder, then the bundle is will be run inside the console, with a file watcher that listens for changes.
 
-In [browser mode](#run-modes) all your `.js` files are inserted into the `index.html` file's designated comment block (see [more]()), the `.js` files are transpiled, then all of them (`.js`, `.min.js`, `.html`) are moved into the `build` folder. A web server is spawned for that folder with an auto-reload / file watcher listening for changes.
+In [browser mode](#run-modes) all your `.js` files are inserted into the `index.html` file's designated comment block (find out [more](##sample-files)), the `.js` files are transpiled, then all of them (`.js`, `.min.js`, `.html`) are moved into the `build` folder. A web server is spawned for that folder with an auto-reload / file watcher listening for changes.
 
 ## Run Modes
 
