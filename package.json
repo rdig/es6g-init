@@ -9,7 +9,8 @@
     "terminal": "gulp --gulpfile gulpfile.js --silent --terminal",
     "http": "npm run browser",
     "browser": "gulp --gulpfile gulpfile.js --browser",
-    "example": ""
+    "postinstall": "npm run prepare",
+    "prepare": ""
   },
   "repository": {
     "type": "git",
