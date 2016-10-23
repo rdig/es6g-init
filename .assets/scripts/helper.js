@@ -224,8 +224,8 @@ const getFoldersByFileExt = (searchPath, extFilter = '', filesArray = [], folder
  * @method moveFiles
  *
  * @param {string/Array} files A string with the file name, or an Array of strings
- * @param {string} [sourcePath=path.resolve()] The source path that willl be prepended to files
- * @param {string} [destPath=path.resolve()] The destination path that willl be prepended to files
+ * @param {string} [sourcePath=path.resolve()] The source path that will be prepended to files
+ * @param {string} [destPath=path.resolve()] The destination path that will be prepended to files
  * @param {Function} [rename=()=>{...}] Rename function that file names will pass through. Must
  * return a value.
  *
@@ -246,7 +246,7 @@ const moveFiles = (
 		);
 	}
 	if (typeof files === 'object') {
-		return ((filesList) => {
+		return (() => {
 			for (let file of files) {
 				fs.rename(
 					sourcePath + '/' + file,
@@ -263,7 +263,7 @@ const moveFiles = (
 					}
 				);
 			}
-		})(files);
+		})();
 	}
 	return fs.rename(
 		sourcePath + '/' + files,
@@ -281,11 +281,63 @@ const moveFiles = (
 	);
 };
 
+/**
+ * Create folders (from a supplied list) into the destionation path
+ *
+ * You can either supply a string containing the file, or an Array of strings.
+ *
+ * @method createFolders
+ *
+ * @param {string/Array} folders A string with the folder name, or an Array of strings
+ * @param {string} [destPath=path.resolve()] The destination path that will be prepended to folders
+ *
+ * @return {Function} The fs.mkdir() method with the supplied arguments
+ */
+const createFolders = (folders,	destPath = path.resolve()) => {
+	if (!folders) {
+		return console.log('You did not supply a list of folders to be created');
+	}
+	if (typeof folders !== 'object' && typeof folders !== 'string') {
+		return console.log(
+			'You did not supply a list of folders in a recognized format (string or array)'
+		);
+	}
+	if (typeof folders === 'object') {
+		return (() => {
+			for (let folder of folders) {
+				fs.mkdir(
+					destPath + '/' + folder,
+					(err) => {
+						if (err) {
+							return console.log(
+								'Could not create folder', folder, 'in', destPath,
+								'\n', 'Error:', err
+							);
+						}
+					}
+				);
+			}
+		})();
+	}
+	return fs.mkdir(
+		destPath + '/' + folder,
+		(err) => {
+			if (err) {
+				return console.log(
+					'Could not create folder', folder, 'in', destPath,
+					'\n', 'Error:', err
+				);
+			}
+		}
+	);
+};
+
 module.exports = {
 	execute,
 	directoryExists,
 	generatePackageJson,
 	getFilesByExt,
 	getFoldersByFileExt,
-	moveFiles
+	moveFiles,
+	createFolders
 };

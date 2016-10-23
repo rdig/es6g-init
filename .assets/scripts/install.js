@@ -5,7 +5,8 @@ const {
 	generatePackageJson,
 	getFilesByExt,
 	getFoldersByFileExt,
-	moveFiles
+	moveFiles,
+	createFolders
 } = require('./helper.js');
 const { name } = require('../../package.json');
 
@@ -61,4 +62,25 @@ generatePackageJson(
 	sourcePath + '/package.json.base',
 	targetPath + '/package.json',
 	{ name: currentFolderName }
+);
+
+/*
+ * Get a list of solders from our sourcePath and create it in our targetPath.
+ * This prevents the moveFiles() for throwing an error if it has to move files in
+ * non-existent folders.
+ */
+createFolders(
+	getFoldersByFileExt(sourcePath, '.base'),
+	targetPath
+);
+
+/*
+ * Get a list of files from our sourcePath and move them to our targetPath.
+ * Also, we rename the files upon move (removing the .base extension).
+ */
+moveFiles(
+	getFilesByExt(sourcePath, '.base'),
+	sourcePath,
+	targetPath,
+	(file) => file.replace('.base', '')
 );
