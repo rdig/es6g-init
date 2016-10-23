@@ -135,7 +135,7 @@ Both these folders can be easily changed inside the gulpfile's configuration obj
 
 ## Scripts
 
-- `__assets/scripts/install.js` - The install script that sets the project up for you *(cleanup, reinitialization)*. This gets trigger by the `postinstall` script hook.
+- `.assets/scripts/prepare.js` - The install script that sets the project up for you *(cleanup, reinitialization)*. This gets trigger by the `postinstall` script hook.
 
 ## Roadmap
 
@@ -144,8 +144,8 @@ Both these folders can be easily changed inside the gulpfile's configuration obj
 
 ## Contributing
 
-We welcome contributions of every form, shape or size. Just have a gander at [CONTRIBUTING.MD](./CONTRIBUTING.MD) to figure out how to get started.
+We welcome contributions of every form, shape or size. Just have a gander at [CONTRIBUTING.MD](./.github/CONTRIBUTING.md) to figure out how to get started.
 
 ## License
 
-See [LICENSE](./LICENSE)
+See [LICENSE](./.github/LICENSE)

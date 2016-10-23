@@ -10,7 +10,7 @@
     "http": "npm run browser",
     "browser": "gulp --gulpfile gulpfile.js --browser",
     "postinstall": "npm run prepare",
-    "prepare": ""
+    "prepare": "nodejs ./.assets/scripts/prepare.js"
   },
   "repository": {
     "type": "git",
