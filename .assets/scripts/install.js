@@ -4,7 +4,8 @@ const {
 	directoryExists,
 	generatePackageJson,
 	getFilesByExt,
-	getFoldersByFileExt
+	getFoldersByFileExt,
+	moveFiles
 } = require('./helper.js');
 const { name } = require('../../package.json');
 

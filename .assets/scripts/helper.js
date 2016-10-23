@@ -213,10 +213,79 @@ const getFoldersByFileExt = (searchPath, extFilter = '', filesArray = [], folder
 	return [...foldersSet];
 };
 
+/**
+ * Move files from source to destination with optional rename
+ *
+ * You can either supply a string containing the file, or an Array of strings.
+ * If you supply an optional rename function, the files will be passed through it before moving
+ * them to their final destination.
+ * The rename function must return a value, otherwise the destination file will have no name.
+ *
+ * @method moveFiles
+ *
+ * @param {string/Array} files A string with the file name, or an Array of strings
+ * @param {string} [sourcePath=path.resolve()] The source path that willl be prepended to files
+ * @param {string} [destPath=path.resolve()] The destination path that willl be prepended to files
+ * @param {Function} [rename=()=>{...}] Rename function that file names will pass through. Must
+ * return a value.
+ *
+ * @return {Function} The fs.rename() method with the supplied arguments
+ */
+const moveFiles = (
+	files,
+	sourcePath = path.resolve(),
+	destPath = path.resolve(),
+	rename = (file) => file
+) => {
+	if (!files) {
+		return console.log('You did not supply a list of files to be moved');
+	}
+	if (typeof files !== 'object' && typeof files !== 'string') {
+		return console.log(
+			'You did not supply a list of files in a recognized format (string or array)'
+		);
+	}
+	if (typeof files === 'object') {
+		return ((filesList) => {
+			for (let file of files) {
+				fs.rename(
+					sourcePath + '/' + file,
+					destPath + '/' + rename(file),
+					(err) => {
+						if (err) {
+							return console.log(
+								'Could not move file',
+								sourcePath + '/' + file, 'to',
+								destPath + '/' + rename(file),
+								'\n', 'Error:', err
+							);
+						}
+					}
+				);
+			}
+		})(files);
+	}
+	return fs.rename(
+		sourcePath + '/' + files,
+		destPath + '/' + rename(files),
+		(err) => {
+			if (err) {
+				return console.log(
+					'Could not move file',
+					sourcePath + '/' + files, 'to',
+					destPath + '/' + rename(files),
+					'\n', 'Error:', err
+				);
+			}
+		}
+	);
+};
+
 module.exports = {
 	execute,
 	directoryExists,
 	generatePackageJson,
 	getFilesByExt,
-	getFoldersByFileExt
+	getFoldersByFileExt,
+	moveFiles
 };
