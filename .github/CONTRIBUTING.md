@@ -54,7 +54,8 @@ Since **this** project doesn't have any dependencies there's no need to install 
 The way the package is working (*or if you're here, how it should be working...*):
 1. The hidden `.assets` folder contains the final package structure
 2. The install script (`.assets/scripts/install.js`) will remove the current project related files and folders (`.git`, `package.json`, etc...) and replace them with ones from `.assets/basefiles`
-3. Run `npm install` to install the dependencies
+3. The prepare script (`.assets/scripts/prepare.js`) is basically the same as the above, only it's meant to be triggered manually via the `prepare` npm script.
+4. `npm install` will install the needed dependencies.
 
 To test that this is working we make use of `npm install`'s support of the file protocol. Basically:
 - Make a new folder

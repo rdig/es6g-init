@@ -65,8 +65,7 @@ These are the available tasks you can use:
 - `term`: Same as `terminal`.
 - `browser`: Start development in [browser mode](#run-modes).
 - `http`: Same as `browser`.
-- `prepare`: Prepares the project for use, this is usually invoked automatically by the `postinstall` hook.
-- `postinstall`: same as `prepare`.
+- `prepare`: Prepares the project for use. *(Useful only if you cloned the repo, otherwise this was already done for you by the installer script)*.
 
 There is also a shorter command, `npm start` which defaults to starting development in [terminal mode](#run-modes).
 
@@ -132,15 +131,6 @@ More info: [github.com/jeffbski/wait-on](https://github.com/jeffbski/wait-on)
 - `build` - Destination folder where Gulp will build / transpile / move the processed files.
 
 Both these folders can be easily changed inside the gulpfile's configuration object (`configObject`).
-
-## Scripts
-
-- `.assets/scripts/prepare.js` - The install script that sets the project up for you *(cleanup, reinitialization)*. This gets trigger by the `postinstall` script hook.
-
-## Roadmap
-
-- Generator -> should generate all required files and link them in package.json
-- Generator -> should be interactive
 
 ## Contributing
 
