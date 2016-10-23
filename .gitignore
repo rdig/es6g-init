@@ -31,3 +31,4 @@ build/*
 .tern-project
 
 # Temporary
+package.json.bk

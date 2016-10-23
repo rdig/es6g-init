@@ -71,7 +71,48 @@ const directoryExists = (
 	}
 }
 
+const generatePackageJson = (sourcePath, destinationPath, seedObject) => fs.readFile(
+	sourcePath,
+	(err, data) => {
+		if (err) {
+			return console.log('Could not read', sourcePath, 'file', '\n', 'Error:', err);
+		}
+
+		if (typeof seedObject !== 'object') {
+			return console.log(
+				'You did not specify an seed object to generate the package.json file'
+			);
+		}
+		/*
+		 * Convert and generate the new object
+		 */
+		const packageObject = JSON.parse(data);
+		const newPackageObject = Object.assign(
+			{},
+			packageObject,
+			seedObject
+		);
+		/*
+		 * Turn it back to a string, and write to the disk
+		 */
+		const packageJson = JSON.stringify(newPackageObject, null, '  ');
+		fs.writeFile(
+			destinationPath,
+			packageJson,
+			'utf8',
+			(err) => {
+				if (err) {
+					return console.log(
+						'Could not write to', destinationPath, '.', 'Error:', err
+					);
+				}
+			}
+		);
+	}
+);
+
 module.exports = {
 	execute,
-	directoryExists
+	directoryExists,
+	generatePackageJson
 };
