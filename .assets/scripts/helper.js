@@ -1,5 +1,6 @@
 const { exec } = require('child_process');
 const fs = require('fs');
+const path = require('path');
 
 /**
  * Wrapper for child_process.exec() method from Node.js's core library.
@@ -11,7 +12,7 @@ const fs = require('fs');
  * @method execute
  *
  * @param {string} command Command to execute
- * @param {string} [workDir=path.resolve()] (optional) Path in which to execute the commmand.
+ * @param {string} [workDir=path.resolve()] Path in which to execute the commmand.
  * Defaults to the current path (./).
  *
  * @return {function} The exec() method with our params
@@ -19,8 +20,12 @@ const fs = require('fs');
 const execute = (command, workDir = path.resolve()) => {
 	/*
 	 * Warn the user to expect delays.
+	 *
 	 * Since we are not streaming the output (known bug, see issues, please fix), at least we
 	 * can do is warn the user to expect a long wait.
+	 *
+	 * Ideally we should only show this if the script doesn't end after a certain time
+	 * (eg: 1 min).
 	 */
 	console.log(
 		'This operation will take a long time,',
@@ -52,8 +57,8 @@ const execute = (command, workDir = path.resolve()) => {
  * @method directoryExists
  *
  * @param {string} path The path to check for
- * @param {function} [cbIfTrue] Callback to call if path exists
- * @param {function} [cbIfFalse] Callback to call if path doesn't exist
+ * @param {function} [cbIfTrue=()=>{...}] Callback to call if path exists
+ * @param {function} [cbIfFalse=()=>{...}] Callback to call if path doesn't exist
  *
  * @return {function} The fs.lstatSync() method
  */
@@ -71,7 +76,20 @@ const directoryExists = (
 	}
 }
 
-const generatePackageJson = (sourcePath, destinationPath, seedObject) => fs.readFile(
+/**
+ * Generate a package.json file from a given source file.
+ *
+ * The gist of how it works: get the source file -> add the seed object -> write to destination.
+ *
+ * @method generatePackageJson
+ *
+ * @param {string} sourcePath The path to the source file
+ * @param {string} destinationPath Path to the destination file
+ * @param {Object} [seedObject={}] The object that will overwrite values in the source file
+ *
+ * @return {Function} The function that reads the source -> writes the destionation
+ */
+const generatePackageJson = (sourcePath, destinationPath, seedObject = {}) => fs.readFile(
 	sourcePath,
 	(err, data) => {
 		if (err) {
@@ -111,8 +129,94 @@ const generatePackageJson = (sourcePath, destinationPath, seedObject) => fs.read
 	}
 );
 
+/**
+ * Retrieve files recursively from a given search path, that match a given extension filter.
+ *
+ * As it stands it works for us, but we should write a better implementation since this only
+ * goes one level deep (for folders) so the files won't get the correct folder path chain
+ * prepended if there are more than one nesting levels.
+ *
+ * If no filter is supplied, it will return all files that it finds.
+ *
+ * @method getFilesByExt
+ *
+ * @param {string} searchPath Path to search for files
+ * @param {string} [extFilter=''] Extension to match against files when filtering
+ * @param {Array} [filesArray=[]] Used for recursion. Stores found files.
+ * @param {string} [folder=''] Used for recursion. Stores current folder name.
+ *
+ * @return {Array} Array of found files that match the given filter.
+ */
+const getFilesByExt = (searchPath, extFilter = '', filesArray = [], folder = '') => {
+	const files = fs.readdirSync(searchPath);
+	files.forEach((file) => {
+		if (fs.statSync(path.join(searchPath, file)).isDirectory()) {
+			filesArray = getFilesByExt(
+				path.join(searchPath, file),
+				extFilter,
+				filesArray,
+				file
+			);
+		} else {
+			if (!extFilter) {
+				filesArray.push(folder ? folder + '/' + file : file);
+			} else {
+				if (file.endsWith(extFilter)) {
+					filesArray.push(folder ? folder + '/' + file : file);
+				}
+			}
+		}
+	});
+	return filesArray;
+};
+
+/**
+ * Retrieve folders recursively from a given search path, that containing files match a given
+ * extension filter.
+ * As it stands it works for us, but we should write a better implementation since this only
+ * goes one level deep (for folders).
+ *
+ * If no filter is supplied, it will return all folders that it finds.
+ * @method getFoldersByFileExt
+ *
+ * @param {string} searchPath Path to search for files
+ * @param {string} [extFilter=''] Extension to match against files when filtering
+ * @param {Array} [filesArray=[]] Used for recursion. Stores found files.
+ * @param {Set} [foldersSet=new Set()] Used for recursion. Stores found folders.
+ * @param {string} [folder=''] Used for recursion. Stores current folder name.
+ *
+ * @return {Array} Array of found folders that contain files matching the given extension filter.
+ */
+const getFoldersByFileExt = (searchPath, extFilter = '', filesArray = [], foldersSet = new Set(), folder = '') => {
+	const files = fs.readdirSync(searchPath);
+	files.forEach((file) => {
+		if (fs.statSync(path.join(searchPath, file)).isDirectory()) {
+			filesArray = getFoldersByFileExt(
+				path.join(searchPath, file),
+				extFilter,
+				filesArray,
+				foldersSet,
+				file
+			);
+		} else {
+			if (folder) {
+				if (!extFilter) {
+					foldersSet.add(folder);
+				} else {
+					if (file.endsWith(extFilter)) {
+						foldersSet.add(folder);
+					}
+				}
+			}
+		}
+	});
+	return [...foldersSet];
+};
+
 module.exports = {
 	execute,
 	directoryExists,
-	generatePackageJson
+	generatePackageJson,
+	getFilesByExt,
+	getFoldersByFileExt
 };
