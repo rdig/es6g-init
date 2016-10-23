@@ -4,13 +4,7 @@
   "version": "0.0.1",
   "description": "An init package to get you up and running **fast** with a clean environment to prototype with javascript",
   "scripts": {
-    "start": "npm run terminal",
-    "term": "npm run terminal",
-    "terminal": "gulp --gulpfile gulpfile.js --silent --terminal",
-    "http": "npm run browser",
-    "browser": "gulp --gulpfile gulpfile.js --browser",
-    "postinstall": "npm run prepare",
-    "prepare": "nodejs ./.assets/scripts/prepare.js"
+    "postinstall": "nodejs ./.assets/scripts/install.js",
   },
   "repository": {
     "type": "git",
@@ -33,16 +27,5 @@
   "bugs": {
     "url": "https://github.com/rdig/es6g-init/issues"
   },
-  "homepage": "https://github.com/rdig/es6g-init",
-  "devDependencies": {
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-concat": "^2.6.0",
-    "gulp-connect": "^5.0.0",
-    "gulp-inject": "^4.1.0",
-    "wait-on": "^1.5.3"
-  }
+  "homepage": "https://github.com/rdig/es6g-init"
 }

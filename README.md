@@ -17,6 +17,22 @@ Features:
 
 ## Quick start
 
+### Automatically via NPM
+
+Create a new folder and enter it:
+```bash
+mkdir <your-new-project-folder>
+cd <your-new-project-folder>
+```
+
+Install the node package *(it will trigger all the additional scripts automatically, and set up everything for you)*:
+```bash
+npm i es6g-init
+```
+Or you can **run this in one line**:
+```bash
+mkdir <your-new-project-folder> && cd <your-new-project-folder> && npm i es6g-init
+```
 ### Manual via this repository
 
 Clone the repository into a new folder (your new project's folder):
@@ -29,9 +45,9 @@ Enter your new folder:
 cd <your-new-project-folder>
 ```
 
-It will prepare the project for YOUR use. It will remove everything that relates to this project, and it will configure it for you.
+Just run the npm install script which will set up the project for you
 ```bash
-npm run prepare
+npm install
 ```
 
 ## How to use
@@ -65,7 +81,6 @@ These are the available tasks you can use:
 - `term`: Same as `terminal`.
 - `browser`: Start development in [browser mode](#run-modes).
 - `http`: Same as `browser`.
-- `prepare`: Prepares the project for use. *(Useful only if you cloned the repo, otherwise this was already done for you by the installer script)*.
 
 There is also a shorter command, `npm start` which defaults to starting development in [terminal mode](#run-modes).
 
