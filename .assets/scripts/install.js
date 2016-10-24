@@ -21,6 +21,13 @@ const repositoryExtraItems = [
 	'.github',
 	'.assets'
 ];
+/*
+ * These will be moved to the targetFolder if we are in package mode
+ */
+const packagesRequiredItems = [
+	'LICENSE',
+	'README.md'
+];
 
 /*
  * Local path which will be used as source.
@@ -28,7 +35,7 @@ const repositoryExtraItems = [
  * This will be generated correctly by path.resolve() in either mode, so no need to worry
  * about this.
  */
-const sourcePath = path.resolve('./.assets/basefiles');
+let sourcePath = path.resolve('./.assets/basefiles');
 /*
  * Destination path.
  *
@@ -98,8 +105,26 @@ moveFiles(
 );
 
 /*
- * If we are in repository mode, delete the extra files and folders
+ * If we are in repository mode, delete the extra files and folders, else, if we are in package
+ * mode move the required files into the target path
  */
 if (mode === 'repository') {
 	deleteItems(repositoryExtraItems, targetPath);
+} else {
+	/*
+	 * We don't use the sourcePath for any other actions at this point so we can overwrite it, as
+	 * to not use another variable :)
+	 */
+	sourcePath = path.resolve();
+	moveFiles(
+		packagesRequiredItems,
+		sourcePath,
+		targetPath
+	);
 }
+
+/*
+ * At this point we finished preparing the targetPath so we can safely install the needed npm
+ * packages.
+ */
+execute('npm install', targetPath)
