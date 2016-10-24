@@ -1,6 +1,7 @@
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const rmrf = require('rimraf');
 
 /**
  * Wrapper for child_process.exec() method from Node.js's core library.
@@ -332,6 +333,60 @@ const createFolders = (folders,	destPath = path.resolve()) => {
 	);
 };
 
+/**
+ * Delete items (files/folders) from a supplied list
+ *
+ * Rimraf (the underlying application that deletes the items for us) does not care if the item
+ * exists or not, so you won't get any errors is you supply non-existent items. In most cases
+ * the only way you'll get an error is if you don't have permissions to remove the item.
+ *
+ * @method deleteItems
+ *
+ * @param {string/Array} items A string with the item name, or an Array of strings
+ * @param {string} [destPath=path.resolve()] The destination path that will be prepended to items
+ *
+ * @return {Function} The rmrf() method with the supplied arguments
+ */
+const deleteItems = (items, destPath = path.resolve()) => {
+	if (!items) {
+		return console.log('You did not supply a list of items (files/folders) to be deleted');
+	}
+	if (typeof items !== 'object' && typeof items !== 'string') {
+		return console.log(
+			'You did not supply a list of items (files/folders)',
+			'in a recognized format (string or array)'
+		);
+	}
+	if (typeof items === 'object') {
+		return (() => {
+			for (let item of items) {
+				rmrf(
+					destPath + '/' + item,
+					(err) => {
+						if (err) {
+							return console.log(
+								'Could not delete', destPath + '/' + item,
+								'\n', 'Error:', err
+							);
+						}
+					}
+				);
+			}
+		})();
+	}
+	return rmrf(
+		destinationPath + '/' + item,
+		(err) => {
+			if (err) {
+				return console.log(
+					'Could not delete', destinationPath + '/' + item,
+					'\n', 'Error:', err
+				);
+			}
+		}
+	);
+};
+
 module.exports = {
 	execute,
 	directoryExists,
@@ -339,5 +394,6 @@ module.exports = {
 	getFilesByExt,
 	getFoldersByFileExt,
 	moveFiles,
-	createFolders
+	createFolders,
+	deleteItems
 };

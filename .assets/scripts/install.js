@@ -6,9 +6,21 @@ const {
 	getFilesByExt,
 	getFoldersByFileExt,
 	moveFiles,
-	createFolders
+	createFolders,
+	deleteItems
 } = require('./helper.js');
 const { name } = require('../../package.json');
+
+/*
+ * These will get deleted if we are in repository mode
+ */
+const repositoryExtraItems = [
+	'.git',
+	'.gitignore',
+	'.npmignore',
+	'.github',
+	'.assets'
+];
 
 /*
  * Local path which will be used as source.
@@ -84,3 +96,10 @@ moveFiles(
 	targetPath,
 	(file) => file.replace('.base', '')
 );
+
+/*
+ * If we are in repository mode, delete the extra files and folders
+ */
+if (mode === 'repository') {
+	deleteItems(repositoryExtraItems, targetPath);
+}

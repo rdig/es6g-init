@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/rdig/es6g-init/issues"
   },
-  "homepage": "https://github.com/rdig/es6g-init"
+  "homepage": "https://github.com/rdig/es6g-init",
+  "dependencies": {
+    "rimraf": "^2.5.4"
+  }
 }
