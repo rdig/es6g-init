@@ -37,10 +37,8 @@ This is a quick outline of the code contributing process:
 1. Fork the repo
 2. Create a new brach
 3. Write new code / bugfix existing code
-4. Test your code ***
-5. Submit a pull request to this repo
-
-** Manually, this is a simple project, doesn't need to be over-complicated with unit / integrations tests (but hey, if you -really- want them in, submit a PR)*
+4. **Do not run `npm i` on your current folder, it will overwrite most of your files**
+6. Submit a pull request to this repo
 
 ### Getting started
 
@@ -49,12 +47,15 @@ Fork, then clone the repo *(change repo name as per your namespace / fork name)*
 git clone git@github.com:<your-name>/<es6g-init-your-fork-name>.git
 ```
 
-Since **this** project doesn't have any dependencies there's no need to install any packages via `npm`. (The actual, final projects, does, and will be installed with the help of the `postinstall` hook via the `install.js` script)
+Since **this** project doesn't have any development dependencies there's **no need** to install any packages via `npm install`. (The actual, final projects, does, and will be installed with the help of the `postinstall` hook via the `install.js` script).
+
+If you want to test the install procedure, re-clone your project folder locally *(more info below)*, but **do not** run `npm install` locally, as it will **overwrite / delete** your files.
 
 The way the package is working (*or if you're here, how it should be working...*):
 1. The hidden `.assets` folder contains the final package structure
 2. The `postinstall` npm script will run the `.assets/scripts/install.js` script, which will remove the current project related files and folders (`.git`, `package.json`, etc...) and replace them with ones from `.assets/basefiles`
-4. Then, after all the files are moved, the same script will run `npm install` for you to install the needed dependencies.
+3. Then, after all the files are moved, the same script will call `npm install` for you to install the needed dependencies.
+4. Basically, this is an install bomb (think fork bomb), but with limited re-spawns (installs).
 
 To test that this is working we make use of `npm install`'s support of the file protocol. Basically:
 - Make a new folder
