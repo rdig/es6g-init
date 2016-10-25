@@ -78,6 +78,6 @@ See the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ### Contributing section
 
-If you submit a new feature / bufix, and this is your first one, please make sure to also add you name / email *([npm person Object format](https://docs.npmjs.com/files/package.json#people-fields-author-contributors))* to the [contributors section](./../package.json) inside of package.json
+If you submit a new feature / bufix, and this is your first one, please make sure to also add you name / email *([npm person Object format](https://docs.npmjs.com/files/package.json#people-fields-author-contributors))* to the [contributors section](./../package.json#L18) inside of package.json
 
 **Thanks for being awesome!**
