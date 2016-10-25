@@ -9,6 +9,8 @@ const rmrf = require('rimraf');
  * It's relying on ANSI terminal codes to change the color of the output. First it will change the
  * color, write the message, than reset to color back (otherwise anything else that get written
  * to the console will have the initial color);
+ * List of ANSI codes:
+ * https://telepathy.freedesktop.org/doc/telepathy-glib/telepathy-glib-debug-ansi.html
  *
  * @method log
  *
@@ -115,8 +117,8 @@ const execute = (command, workDir = path.resolve()) => {
  */
 const directoryExists = (
 	path,
-	cbIfTrue = () => console.log('Directory exists'),
-	cbIfFalse = () => console.log('Directory does not exist')
+	cbIfTrue = () => log('Directory exists', 'success'),
+	cbIfFalse = () => log('Directory does not exist', 'error')
 ) => {
 	try {
 		fs.lstatSync(path);
@@ -144,12 +146,16 @@ const generatePackageJson = (sourcePath, destinationPath, seedObject = {}) => fs
 	sourcePath,
 	(err, data) => {
 		if (err) {
-			return console.log('Could not read', sourcePath, 'file', '\n', 'Error:', err);
+			return log(
+				'Could not read ' + sourcePath + 'file' + '\n' + 'Error: ' + err,
+				'error'
+			);
 		}
 
 		if (typeof seedObject !== 'object') {
-			return console.log(
-				'You did not specify an seed object to generate the package.json file'
+			return log(
+				'You did not specify a valid seed object to generate package.json',
+				'error'
 			);
 		}
 		/*
@@ -171,8 +177,9 @@ const generatePackageJson = (sourcePath, destinationPath, seedObject = {}) => fs
 			'utf8',
 			(err) => {
 				if (err) {
-					return console.log(
-						'Could not write to', destinationPath, '.', 'Error:', err
+					return log(
+						'Could not write to ' + destinationPath + '. Error: ' + err,
+						'error'
 					);
 				}
 			}
@@ -289,11 +296,12 @@ const moveFiles = (
 	rename = (file) => file
 ) => {
 	if (!files) {
-		return console.log('You did not supply a list of files to be moved');
+		return log('You did not supply a list of files to be moved', 'error');
 	}
 	if (typeof files !== 'object' && typeof files !== 'string') {
-		return console.log(
-			'You did not supply a list of files in a recognized format (string or array)'
+		return log(
+			'You did not supply a list of files in a recognized format (string or array)',
+			'error'
 		);
 	}
 	if (typeof files === 'object') {
@@ -304,11 +312,10 @@ const moveFiles = (
 					destPath + '/' + rename(file),
 					(err) => {
 						if (err) {
-							return console.log(
-								'Could not move file',
-								sourcePath + '/' + file, 'to',
-								destPath + '/' + rename(file),
-								'\n', 'Error:', err
+							return log(
+								'Could not move file ' + sourcePath + '/' + file + ' to ' +
+								destPath + '/' + rename(file) + '\n' + 'Error:' + err,
+								'error'
 							);
 						}
 					}
@@ -321,11 +328,10 @@ const moveFiles = (
 		destPath + '/' + rename(files),
 		(err) => {
 			if (err) {
-				return console.log(
-					'Could not move file',
-					sourcePath + '/' + files, 'to',
-					destPath + '/' + rename(files),
-					'\n', 'Error:', err
+				return log(
+					'Could not move file ' + sourcePath + '/' + file + ' to ' +
+					destPath + '/' + rename(file) + '\n' + 'Error:' + err,
+					'error'
 				);
 			}
 		}
@@ -346,11 +352,12 @@ const moveFiles = (
  */
 const createFolders = (folders,	destPath = path.resolve()) => {
 	if (!folders) {
-		return console.log('You did not supply a list of folders to be created');
+		return log('You did not supply a list of folders to be created', 'error');
 	}
 	if (typeof folders !== 'object' && typeof folders !== 'string') {
-		return console.log(
-			'You did not supply a list of folders in a recognized format (string or array)'
+		return log(
+			'You did not supply a list of folders in a recognized format (string or array)',
+			'error'
 		);
 	}
 	if (typeof folders === 'object') {
@@ -361,8 +368,9 @@ const createFolders = (folders,	destPath = path.resolve()) => {
 					(err) => {
 						if (err) {
 							return console.log(
-								'Could not create folder', folder, 'in', destPath,
-								'\n', 'Error:', err
+								'Could not create folder ' + folder + ' in ' + destPath + '\n' +
+								'Error: ' + err,
+								'error'
 							);
 						}
 					}
@@ -375,8 +383,9 @@ const createFolders = (folders,	destPath = path.resolve()) => {
 		(err) => {
 			if (err) {
 				return console.log(
-					'Could not create folder', folder, 'in', destPath,
-					'\n', 'Error:', err
+					'Could not create folder ' + folder + ' in ' + destPath + '\n' +
+					'Error: ' + err,
+					'error'
 				);
 			}
 		}
@@ -399,12 +408,13 @@ const createFolders = (folders,	destPath = path.resolve()) => {
  */
 const deleteItems = (items, destPath = path.resolve()) => {
 	if (!items) {
-		return console.log('You did not supply a list of items (files/folders) to be deleted');
+		return log('You did not supply a list of items (files/folders) to be deleted', 'error');
 	}
 	if (typeof items !== 'object' && typeof items !== 'string') {
-		return console.log(
-			'You did not supply a list of items (files/folders)',
-			'in a recognized format (string or array)'
+		return log(
+			'You did not supply a list of items (files/folders)' +
+			'in a recognized format (string or array)',
+			'error'
 		);
 	}
 	if (typeof items === 'object') {
@@ -415,8 +425,9 @@ const deleteItems = (items, destPath = path.resolve()) => {
 					(err) => {
 						if (err) {
 							return console.log(
-								'Could not delete', destPath + '/' + item,
-								'\n', 'Error:', err
+								'Could not delete ' + destPath + '/' + item + '\n' +
+								'Error: ' + err,
+								'error'
 							);
 						}
 					}
@@ -429,8 +440,9 @@ const deleteItems = (items, destPath = path.resolve()) => {
 		(err) => {
 			if (err) {
 				return console.log(
-					'Could not delete', destinationPath + '/' + item,
-					'\n', 'Error:', err
+					'Could not delete ' + destPath + '/' + item + '\n' +
+					'Error: ' + err,
+					'error'
 				);
 			}
 		}
