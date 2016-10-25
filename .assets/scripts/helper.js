@@ -4,6 +4,57 @@ const path = require('path');
 const rmrf = require('rimraf');
 
 /**
+ * Wrapper function that logs a colorized message to the console
+ *
+ * It's relying on ANSI terminal codes to change the color of the output. First it will change the
+ * color, write the message, than reset to color back (otherwise anything else that get written
+ * to the console will have the initial color);
+ *
+ * @method log
+ *
+ * @param {string} message The string to be written to the console
+ * @param {string} [color='green'] The color to write the message in.
+ *
+ * @return {Function} The console.log() method with the formatted message as argument
+ */
+const log = (message, color = 'green') => {
+	const ansiColors = new function() {
+		this._reset = 0;
+		this.black = 30;
+		this.red = 31;
+		this.green = 32;
+		this.yellow = 33;
+		this.blue = 34;
+		this.magenta = 35;
+		this.cyan = 36;
+		this.white = 37;
+		/*
+		 * Aliases
+		 */
+		this.success = this.green;
+		this.warn = this.yellow;
+		this.error = this.red;
+	};
+
+	let currentColor = '_reset';
+	if (color in ansiColors) {
+		currentColor = color;
+	}
+
+	return console.log(
+		/*
+		 * Set the color
+		 */
+		'\x1b[' + ansiColors[currentColor] + 'm' +
+		message +
+		/*
+		 * Reset the color to intial state
+		 */
+		'\x1b[' + ansiColors._reset + 'm'
+	);
+};
+
+/**
  * Wrapper for child_process.exec() method from Node.js's core library.
  *
  * Spawns a shell and executes the command in it, buffering the output.
@@ -28,13 +79,12 @@ const execute = (command, workDir = path.resolve()) => {
 	 * Ideally we should only show this if the script doesn't end after a certain time
 	 * (eg: 1 min).
 	 */
-	console.log(
-		'This operation will take a long time,',
-		'and output will only be shown when done (buffered).',
-		'\n',
-		'You can go and grab a cup of coffee in the meantime...',
-		'\n'
-	);
+	const delayMessage = 'This operation will take a long time, ' +
+		'and output will only be shown when done (buffered).' +	'\n' +
+		'You can go and grab a cup of coffee in the meantime...' + '\n';
+
+	log(delayMessage, 'warn');
+
 	return exec(
 		command,
 		{ cwd: workDir },
@@ -395,5 +445,6 @@ module.exports = {
 	getFoldersByFileExt,
 	moveFiles,
 	createFolders,
-	deleteItems
+	deleteItems,
+	log
 };
