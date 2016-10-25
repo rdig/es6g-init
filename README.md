@@ -17,22 +17,6 @@ Features:
 
 ## Quick start
 
-### Automatically via NPM
-
-Create a new folder and enter it:
-```bash
-mkdir <your-new-project-folder>
-cd <your-new-project-folder>
-```
-
-Install the node package *(it will trigger all the additional scripts automatically, and set up everything for you)*:
-```bash
-npm i es6g-init
-```
-Or you can **run this in one line**:
-```bash
-mkdir <your-new-project-folder> && cd <your-new-project-folder> && npm i es6g-init
-```
 ### Manual via this repository
 
 Clone the repository into a new folder (your new project's folder):
