@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "es6g-init",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "An init package to get you up and running **fast** with a clean environment to prototype with javascript",
   "scripts": {
     "postinstall": "nodejs ./.assets/scripts/install.js"
