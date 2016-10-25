@@ -88,7 +88,7 @@ configObject.options.connect = {
  *
  * @param {string} file String containing file name including path
  *
- * @return {bool} Function returns false, since it's used only for display
+ * @return {Function} Returns the wait-on method
  */
 const terminalExec = (file) => {
 
@@ -107,10 +107,10 @@ const terminalExec = (file) => {
 	/*
 	 * Wait for our file to become available else, we get an error
 	 */
-	wait(options, function (err) {
+	return wait(options, function (err) {
 
 		if (err) {
-			return handleError(err);
+			return console.log(err);
 		}
 
 		exec('nodejs ' + file, (err, stdout, stderr) => {
@@ -131,15 +131,13 @@ const terminalExec = (file) => {
 				''
 			);
 
-			console.log(stdout);
+			return console.log(stdout);
 
 			if (stderr) {
-				console.log(stderr);
+				return console.log(stderr);
 			}
 
 		});
-
-		return false;
 
 	});
 
