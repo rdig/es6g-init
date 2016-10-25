@@ -18,7 +18,7 @@ Before submitting a new bug have a look at the issues [labeled `bug`](https://gi
 
 ### New features
 
-Before suggesting a new feature take a look at the [roadmap](https://github.com/rdig/es6g-init#roadmap) or the issues [labeled `roadmap`](https://github.com/rdig/es6g-init/issues?utf8=%E2%9C%93&q=label%3Aroadmap%20), maybe it's already scheduled. If it's not, [submit it](https://github.com/rdig/es6g-init/issues/new)!
+Before suggesting a new feature take a look at the issues [labeled `roadmap`](https://github.com/rdig/es6g-init/issues?utf8=%E2%9C%93&q=label%3Aroadmap%20), maybe it's already scheduled. If it's not, [submit it](https://github.com/rdig/es6g-init/issues/new)!
 
 ### Manual testing
 
@@ -70,7 +70,7 @@ npm i <location/to/your/forked-repo>
 
 Happy coding!
 
-*PS: If it still doesn't make sense, feel free to [open a new issue](https://github.com/rdig/es6g-init/issues/new) or [contact me](./../package.json) and we'll straiten things out.*
+*PS: If it still doesn't make sense, feel free to [open a new issue](https://github.com/rdig/es6g-init/issues/new) or [contact me](./../package.json#L15) and we'll straiten things out.*
 
 ### Code of conduct
 

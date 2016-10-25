@@ -153,4 +153,4 @@ We welcome contributions of every form, shape or size. Just have a gander at [CO
 
 ## License
 
-See [LICENSE](./.github/LICENSE)
+See [LICENSE](./LICENSE)
