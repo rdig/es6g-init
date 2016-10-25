@@ -127,4 +127,4 @@ if (mode === 'repository') {
  * At this point we finished preparing the targetPath so we can safely install the needed npm
  * packages.
  */
-execute('npm install', targetPath)
+execute('npm install', targetPath);

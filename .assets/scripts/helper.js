@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { execFile } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const rmrf = require('rimraf');
@@ -66,12 +66,18 @@ const log = (message, color = 'green') => {
  * @method execute
  *
  * @param {string} command Command to execute
- * @param {string} [workDir=path.resolve()] Path in which to execute the commmand.
- * Defaults to the current path (./).
+ * @param {string} [workDir=path.resolve()] Path in which to execute the commmand. Defaults to the
+ * current path (./).
+ * @param {Function} [callback=(cmd)=>{...}] Callback to execute if the command executes
+ * successfully. Takes in the command as parameter.
  *
- * @return {function} The exec() method with our params
+ * @return {Function} The exec() method with our params
  */
-const execute = (command, workDir = path.resolve()) => {
+const execute = (
+	command,
+	workDir = path.resolve(),
+	callback = (cmd) => log('Command `' + cmd + '` executed successfully' + '\n', 'success')
+) => {
 	/*
 	 * Warn the user to expect delays.
 	 *
@@ -87,13 +93,19 @@ const execute = (command, workDir = path.resolve()) => {
 
 	log(delayMessage, 'warn');
 
-	return exec(
-		command,
+	const commandToExecute = command.split(' ');
+
+	return execFile(
+		commandToExecute.shift(),
+		commandToExecute,
 		{ cwd: workDir },
 		(err, stdout, stderr) => {
-			if (err) { return console.log(err); }
-			if (stderr) { return console.log(stderr); }
-			return console.log(stdout);
+			if (err) {
+				return log('Command `' + command + '` failed to execute. ' + err, 'error');
+			}
+			log(stderr, 'warn');
+			log(stdout, '_reset');
+			return callback(command);
 		}
 	);
 };
