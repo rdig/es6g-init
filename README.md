@@ -4,6 +4,10 @@ An init package *(you could view it as an boilerplate, but that would be an over
 
 It's meant to build simple code / figuring out how things work as opposed to building web applications (although it features a web server for all your in-browser needs).
 
+## Show
+
+![es6g-init quick usage](./.assets/media/es6g-demoreel.gif)
+
 ## Tell
 
 Features:
