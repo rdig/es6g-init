@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "An init package to get you up and running **fast** with a clean environment to prototype with javascript",
   "scripts": {
-    "postinstall": "nodejs ./.assets/scripts/install.js"
+    "postinstall": "node ./.assets/scripts/install.js"
   },
   "repository": {
     "type": "git",

@@ -113,7 +113,7 @@ const terminalExec = (file) => {
 			return console.log(err);
 		}
 
-		exec('nodejs ' + file, (err, stdout, stderr) => {
+		exec('node ' + file, (err, stdout, stderr) => {
 
 			const executionTime = (Date.now() - startExecution);
 
