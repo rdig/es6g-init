@@ -1,4 +1,4 @@
-const { execFile } = require('child_process');
+const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const rmrf = require('rimraf');
@@ -93,10 +93,9 @@ const execute = (
 
 	log(delayMessage, 'warn');
 
-	const commandToExecute = command.split(' ');
+	const commandToExecute = command;
 
-	return execFile(
-		commandToExecute.shift(),
+	return exec(
 		commandToExecute,
 		{ cwd: workDir },
 		(err, stdout, stderr) => {
