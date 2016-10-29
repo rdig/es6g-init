@@ -48,7 +48,7 @@ const configObject = {
 	 */
 	options: {
 		babel: {
-			presets: ['es2015', 'stage-0'],
+			presets: ['es2015-without-strict', 'stage-0'],
 			comments: false,
 			ignore: '*.min.js'
 		},
