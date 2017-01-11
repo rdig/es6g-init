@@ -109,6 +109,23 @@ const execute = (
 	);
 };
 
+
+/** 
+* helper methods to check if given items are strings or objects 
+* to reduce boilerplate per issue #9 
+*/
+const isString = (param) => {
+	if (typeof param === "string")
+		{return true}
+	else {return false}
+}
+
+const isObj = (param) => {
+if (typeof param === "object")
+		{return true}
+	else {return false}
+}
+
 /**
  * Syncronous function to detect if a folder exists.
  *
@@ -282,21 +299,6 @@ const getFoldersByFileExt = (searchPath, extFilter = '', filesArray = [], folder
 	return [...foldersSet];
 };
 
-/** 
-* helper methods to check if given items are strings or objects 
-* to reduce boilerplate per issue #9 
-*/
-const isString = (param) => {
-	if (typeof param === "string")
-		{return true}
-	else {return false}
-}
-
-const isObj = (param) => {
-if (typeof param === "object")
-		{return true}
-	else {return false}
-}
 
 /**
  * Move files from source to destination with optional rename
