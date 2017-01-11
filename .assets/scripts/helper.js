@@ -109,6 +109,23 @@ const execute = (
 	);
 };
 
+
+/** 
+* helper methods to check if given items are strings or objects 
+* to reduce boilerplate per issue #9 
+*/
+const isString = (param) => {
+	if (typeof param === "string")
+		{return true}
+	else {return false}
+}
+
+const isObj = (param) => {
+if (typeof param === "object")
+		{return true}
+	else {return false}
+}
+
 /**
  * Syncronous function to detect if a folder exists.
  *
@@ -163,7 +180,7 @@ const generatePackageJson = (sourcePath, destinationPath, seedObject = {}) => fs
 			);
 		}
 
-		if (typeof seedObject !== 'object') {
+		if (!isObj(seedObject)) {
 			return log(
 				'You did not specify a valid seed object to generate package.json',
 				'error'
@@ -282,6 +299,7 @@ const getFoldersByFileExt = (searchPath, extFilter = '', filesArray = [], folder
 	return [...foldersSet];
 };
 
+
 /**
  * Move files from source to destination with optional rename
  *
@@ -309,13 +327,13 @@ const moveFiles = (
 	if (!files) {
 		return log('You did not supply a list of files to be moved', 'error');
 	}
-	if (typeof files !== 'object' && typeof files !== 'string') {
+	if (!isObj(files) && !isString(files)) {
 		return log(
 			'You did not supply a list of files in a recognized format (string or array)',
 			'error'
 		);
 	}
-	if (typeof files === 'object') {
+	if (isObj(files)) {
 		return (() => {
 			for (let file of files) {
 				fs.rename(
@@ -365,13 +383,13 @@ const createFolders = (folders,	destPath = path.resolve()) => {
 	if (!folders) {
 		return log('You did not supply a list of folders to be created', 'error');
 	}
-	if (typeof folders !== 'object' && typeof folders !== 'string') {
+	if (!isObj(folders) && !isString(files)) {
 		return log(
 			'You did not supply a list of folders in a recognized format (string or array)',
 			'error'
 		);
 	}
-	if (typeof folders === 'object') {
+	if (isObj(folders)) {
 		return (() => {
 			for (let folder of folders) {
 				fs.mkdir(
@@ -421,14 +439,14 @@ const deleteItems = (items, destPath = path.resolve()) => {
 	if (!items) {
 		return log('You did not supply a list of items (files/folders) to be deleted', 'error');
 	}
-	if (typeof items !== 'object' && typeof items !== 'string') {
+	if (!isObj(items) && !isString(items)) {
 		return log(
 			'You did not supply a list of items (files/folders)' +
 			'in a recognized format (string or array)',
 			'error'
 		);
 	}
-	if (typeof items === 'object') {
+	if (isObj(items)) {
 		return (() => {
 			for (let item of items) {
 				rmrf(
